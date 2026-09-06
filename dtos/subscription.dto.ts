@@ -12,3 +12,13 @@ export interface CreateSubscriptionBody {
 }
 
 export type CreateSubscriptionResponse = APIResponse<Subscription>;
+
+export interface UpdateSubscriptionBody {
+  name?: string;
+  description?: string;
+  price?: number;
+  type?: "yearly" | "monthly";
+  billingDayOfMonth?: number;
+}
+
+export type UpdateSubscriptionResponse = APIResponse<Subscription>;

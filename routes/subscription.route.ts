@@ -5,5 +5,6 @@ const router: Router = Router();
 
 router.get("/", subscriptionController.getAll);
 router.post("/", subscriptionController.create);
+router.patch("/:id", subscriptionController.update);
 
 export default router;

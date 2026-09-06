@@ -4,6 +4,8 @@ import type {
   CreateSubscriptionBody,
   CreateSubscriptionResponse,
   GetAllSubscriptionResponse,
+  UpdateSubscriptionBody,
+  UpdateSubscriptionResponse,
 } from "../dtos/subscription.dto";
 
 const errMsg = (err: unknown): string =>
@@ -29,6 +31,29 @@ export const subscriptionController = {
     try {
       const subscription = await subscriptionRepository.create(req.body);
       res.status(201).json({ success: true, data: subscription, error: null });
+    } catch (err) {
+      res.status(500).json({ success: false, data: null, error: errMsg(err) });
+    }
+  },
+
+  update: async (
+    req: Request<{ id: string }, {}, UpdateSubscriptionBody>,
+    res: Response<UpdateSubscriptionResponse>,
+  ): Promise<void> => {
+    try {
+      const subscription = await subscriptionRepository.update(
+        req.params.id,
+        req.body,
+      );
+      if (!subscription) {
+        res.status(404).json({
+          success: false,
+          data: null,
+          error: "subscription not found",
+        });
+        return;
+      }
+      res.status(200).json({ success: true, data: subscription, error: null });
     } catch (err) {
       res.status(500).json({ success: false, data: null, error: errMsg(err) });
     }
