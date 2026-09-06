@@ -20,9 +20,16 @@ export const subscriptionController = {
   ): Promise<void> => {
     try {
       const subscriptions = await subscriptionRepository.getAll();
-      res.status(200).json({ success: true, data: subscriptions, error: null });
+      res.status(200).json({
+        success: true,
+        length: subscriptions.length,
+        data: subscriptions,
+        error: null,
+      });
     } catch (err) {
-      res.status(500).json({ success: false, data: [], error: errMsg(err) });
+      res
+        .status(500)
+        .json({ success: false, length: 0, data: [], error: errMsg(err) });
     }
   },
 
