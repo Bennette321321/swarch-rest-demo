@@ -1,0 +1,36 @@
+import type { Request, Response } from "express";
+import { subscriptionRepository } from "../repositories/subscription.repository";
+import type {
+  CreateSubscriptionBody,
+  CreateSubscriptionResponse,
+  GetAllSubscriptionResponse,
+} from "../dtos/subscription.dto";
+
+const errMsg = (err: unknown): string =>
+  err instanceof Error ? err.message : "unknown error";
+
+export const subscriptionController = {
+  getAll: async (
+    req: Request,
+    res: Response<GetAllSubscriptionResponse>,
+  ): Promise<void> => {
+    try {
+      const subscriptions = await subscriptionRepository.getAll();
+      res.status(200).json({ success: true, data: subscriptions, error: null });
+    } catch (err) {
+      res.status(500).json({ success: false, data: [], error: errMsg(err) });
+    }
+  },
+
+  create: async (
+    req: Request<{}, {}, CreateSubscriptionBody>,
+    res: Response<CreateSubscriptionResponse>,
+  ): Promise<void> => {
+    try {
+      const subscription = await subscriptionRepository.create(req.body);
+      res.status(201).json({ success: true, data: subscription, error: null });
+    } catch (err) {
+      res.status(500).json({ success: false, data: null, error: errMsg(err) });
+    }
+  },
+};
