@@ -21,4 +21,10 @@ export const subscriptionRepository = {
       new: true,
       runValidators: true,
     }).lean(),
+
+  getOne: (id: string): Promise<Subscription | null> =>
+    SubscriptionModel.findById(id).lean(),
+
+  delete: (id: string): Promise<Subscription | null> =>
+    SubscriptionModel.findByIdAndDelete(id).lean(),
 };

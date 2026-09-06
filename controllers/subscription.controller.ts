@@ -3,7 +3,9 @@ import { subscriptionRepository } from "../repositories/subscription.repository"
 import type {
   CreateSubscriptionBody,
   CreateSubscriptionResponse,
+  DeleteSubscriptionResponse,
   GetAllSubscriptionResponse,
+  GetOneSubscriptionResponse,
   UpdateSubscriptionBody,
   UpdateSubscriptionResponse,
 } from "../dtos/subscription.dto";
@@ -36,6 +38,26 @@ export const subscriptionController = {
     }
   },
 
+  getOne: async (
+    req: Request<{ id: string }>,
+    res: Response<GetOneSubscriptionResponse>,
+  ): Promise<void> => {
+    try {
+      const subscription = await subscriptionRepository.getOne(req.params.id);
+      if (!subscription) {
+        res.status(404).json({
+          success: false,
+          data: null,
+          error: "subscription not found",
+        });
+        return;
+      }
+      res.status(200).json({ success: true, data: subscription, error: null });
+    } catch (err) {
+      res.status(500).json({ success: false, data: null, error: errMsg(err) });
+    }
+  },
+
   update: async (
     req: Request<{ id: string }, {}, UpdateSubscriptionBody>,
     res: Response<UpdateSubscriptionResponse>,
@@ -45,6 +67,26 @@ export const subscriptionController = {
         req.params.id,
         req.body,
       );
+      if (!subscription) {
+        res.status(404).json({
+          success: false,
+          data: null,
+          error: "subscription not found",
+        });
+        return;
+      }
+      res.status(200).json({ success: true, data: subscription, error: null });
+    } catch (err) {
+      res.status(500).json({ success: false, data: null, error: errMsg(err) });
+    }
+  },
+
+  delete: async (
+    req: Request<{ id: string }>,
+    res: Response<DeleteSubscriptionResponse>,
+  ): Promise<void> => {
+    try {
+      const subscription = await subscriptionRepository.delete(req.params.id);
       if (!subscription) {
         res.status(404).json({
           success: false,

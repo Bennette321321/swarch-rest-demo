@@ -3,6 +3,8 @@ import type { APIResponse } from "./response.dto";
 
 export type GetAllSubscriptionResponse = APIResponse<Subscription[]>;
 
+export type GetOneSubscriptionResponse = APIResponse<Subscription>;
+
 export interface CreateSubscriptionBody {
   name: string;
   description?: string;
@@ -22,3 +24,5 @@ export interface UpdateSubscriptionBody {
 }
 
 export type UpdateSubscriptionResponse = APIResponse<Subscription>;
+
+export type DeleteSubscriptionResponse = APIResponse<Subscription>;
